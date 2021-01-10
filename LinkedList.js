@@ -25,8 +25,21 @@ class LinkedList {
 
     current.next = newNodes;
   }
-  delete() {
+  delete(val) {
+    let current = this.root;
+    let prev = current;
 
+    while (current !== null && current.value !== val) {
+      prev = current;
+      current = current.next;
+    }
+
+    if (current !== null && current.value === val) {
+      prev.next = current.next;
+      current = null;
+    } else {
+      throw new Error('The given nodes does not exists')
+    }
   }
   genetateLinkedList() {
     this.sourceArray.forEach(item => {

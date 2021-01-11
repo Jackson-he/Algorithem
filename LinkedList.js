@@ -25,6 +25,7 @@ class LinkedList {
 
     current.next = newNodes;
   }
+  // 删除指定节点
   delete(val) {
     let current = this.root;
     let prev = current;
@@ -46,9 +47,32 @@ class LinkedList {
       this.insertToLast(item)
     })
   }
-  // 单链表反转
+  /**
+   * 单链表反转
+   * 思路：一次遍历，遇到一个节点就把这个节点从当前节点提到头部节点之后
+   * 方法：双指针，prev节点永远指向第一个节点，动态移动current节点
+   */
   reverseList() {
+    if (this.root.next === null || this.root.next.next === null) return;
+    
+    const insertToTheFirst = (nodes) => {
+      const firstNodes = this.root.next;
+      nodes.next = firstNodes;
+      this.root.next = nodes;
+    }
 
+    let prev = this.root.next;
+    let current = prev.next;
+
+    while (current !== null) {
+      let next = current.next;
+      // 当前节点插入头部
+      insertToTheFirst(current);
+      // 删除当前节点
+      prev.next = next;
+      // 移动当前指针
+      current = prev.next;
+    }
   }
   // 删除链表倒数第n个节点
   removeNnodes() {

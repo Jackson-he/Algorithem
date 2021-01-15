@@ -54,7 +54,7 @@ class LinkedList {
    */
   reverseList() {
     if (this.root.next === null || this.root.next.next === null) return;
-    
+
     const insertToTheFirst = (nodes) => {
       const firstNodes = this.root.next;
       nodes.next = firstNodes;
@@ -74,17 +74,42 @@ class LinkedList {
       current = prev.next;
     }
   }
-  // 删除链表倒数第n个节点
-  removeNnodes() {
-
+  /**
+   * 删除链表倒数第n个节点
+   * 思路：一次遍历，双指针保持固定距离前行，前一个指针到达终点时，后一个指针刚好是倒数第n个节点，同时记录后一个指针的前一个节点，便于删除操作
+   * 方法：双指针，prev节点永远指向第一个节点，动态移动current节点
+   */
+  removeNnodes(n) {
+    let nextPoint = this.root;
+    let prevPoint = this.root;
+    let nextPrevPoint = this.root;
+    let i = 0;
+    
+    while (prevPoint !== null) {
+      prevPoint = prevPoint.next;
+      if (i < n) {
+        i++;
+      } else {
+        nextPrevPoint = nextPoint;
+        nextPoint = nextPoint.next;
+      }
+    }
+    nextPrevPoint.next = nextPoint.next;
+    nextPoint = null;
   }
-  // 求链表的中间节点
-  listMiddleNodes() {
-
-  }
-  // 链表中环的检测
+  /**
+   * 链表中环的检测
+   * 思路：两个指针，一个快指针，一个慢指针，如果快指针能赶到慢指针，则说明存在环
+   */ 
   hasCircle() {
-
+    let fastPoint = this.head.next;
+    let slowPoint = this.head.next;
+    while (fastPoint === null && fastPoint.next !== null) {
+      fastPoint = fastPoint.next.next;
+      slowPoint = slowPoint.next;
+      if (fastPoint === slowPoint) return true
+    }
+    return false;
   }
   // 两个有序链表的合并
   mergeOrderedLinkedList(listA, listB) {

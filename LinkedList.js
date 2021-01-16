@@ -111,9 +111,41 @@ class LinkedList {
     }
     return false;
   }
-  // 两个有序链表的合并
-  mergeOrderedLinkedList(listA, listB) {
+  /**
+   * 两个有序链表的合并
+   * 思路：以第一个链表为基础，顺序遍历第二个链表，l2 大于 l1 时插入 l1后面，l2 小于 l1 时 插入 l1 前面
+   */
+  mergeOrderedLinkedList(l1, l2) {
+    if (l1 === null) return l2;
+    if (l2 === null) return l1;
 
+    let l1Node = l1.next;
+    let l2Node = l2.next;
+    let current = null;
+    let prev = this.root;
+
+    while (l1Node !== null && l2Node !== null) {
+        if (l1Node.value <= l2Node.value) {
+            if (l1Node.next === null || l1Node.next.value >= l2Node.value) {
+                current = new ListNode(l2Node.value);
+                current.next = l1Node.next;
+
+                l1Node.next = current;
+                l2Node = l2Node.next; // 移动l2指针
+                current = null;
+            } else {
+                l1Node = l1Node.next; // 移动l1指针
+            }
+        } else {
+            current = new ListNode(l2Node.value);
+            current.next = l1Node;
+            prev.next = current;
+            prev = current; // 移动prev指针到当前节点
+            l2Node = l2Node.next; // 移动l2指针
+            current = null;
+        }
+    }
+    return l1.next;
   }
 }
 
